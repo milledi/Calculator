@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Дизайн-токены. Значения — каналы RGB, чтобы Tailwind мог добавлять прозрачность (bg-brand/20). */
+:root {
+  color-scheme: light;
+
+  --canvas: 244 243 238;
+  --surface: 255 255 255;
+  --subtle: 238 236 229;
+  --ink: 20 24 22;
+  --muted: 92 99 96;
+  --line: 226 223 214;
+  --line-strong: 204 200 189;
+
+  --brand: 13 107 79;
+  --brand-hover: 10 87 64;
+  --brand-soft: 221 240 231;
+  --on-brand: 255 255 255;
+
+  --danger: 185 28 28;
+  --warning: 161 98 7;
+
+  /* Тёмная карточка расчёта — одинаковая в обеих темах */
+  --panel: 16 36 28;
+  --panel-ink: 238 243 239;
+  --panel-muted: 163 181 172;
+  --panel-line: 40 64 53;
+  --panel-danger: 252 165 165;
+  --highlight: 198 243 107;
+  --on-highlight: 16 36 28;
+
+  /* Цвета графиков (проверены на контраст и различимость при дальтонизме на фоне --panel) */
+  --chart-principal: 104 169 58;
+  --chart-interest: 108 140 245;
+  --chart-good: 104 169 58;
+  --chart-warn: 224 160 48;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --canvas: 11 14 13;
+    --surface: 21 26 24;
+    --subtle: 29 36 33;
+    --ink: 236 241 238;
+    --muted: 154 166 160;
+    --line: 39 47 43;
+    --line-strong: 62 73 68;
+
+    --brand: 52 196 142;
+    --brand-hover: 86 214 165;
+    --brand-soft: 20 52 40;
+    --on-brand: 6 20 14;
+
+    --danger: 248 113 113;
+    --warning: 251 191 36;
+
+    --panel-line: 48 76 63;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-ink antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    @apply bg-brand/20;
+  }
+}
+
+@layer components {
+  /* Ползунок: трек 4px, заполнение через --fill (0–100%), большой бегунок для тач-экранов */
+  .range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 28px;
+    background: transparent;
+    cursor: pointer;
+    touch-action: pan-y;
+  }
+
+  .range:focus {
+    outline: none;
+  }
+
+  .range::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      to right,
+      rgb(var(--brand)) var(--fill, 0%),
+      rgb(var(--line-strong)) var(--fill, 0%)
+    );
+  }
+
+  .range::-moz-range-track {
+    height: 4px;
+    border-radius: 9999px;
+    background: rgb(var(--line-strong));
+  }
+
+  .range::-moz-range-progress {
+    height: 4px;
+    border-radius: 9999px;
+    background: rgb(var(--brand));
+  }
+
+  .range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    width: 22px;
+    height: 22px;
+    margin-top: -9px;
+    border-radius: 9999px;
+    background: rgb(var(--brand));
+    border: 4px solid rgb(var(--surface));
+    box-shadow: 0 1px 4px rgb(0 0 0 / 0.3);
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+
+  .range::-moz-range-thumb {
+    box-sizing: border-box;
+    width: 22px;
+    height: 22px;
+    border-radius: 9999px;
+    background: rgb(var(--brand));
+    border: 4px solid rgb(var(--surface));
+    box-shadow: 0 1px 4px rgb(0 0 0 / 0.3);
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+
+  .range:active::-webkit-slider-thumb {
+    transform: scale(1.15);
+  }
+
+  .range:active::-moz-range-thumb {
+    transform: scale(1.15);
+  }
+
+  .range:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 5px rgb(var(--brand) / 0.3);
+  }
+
+  .range:focus-visible::-moz-range-thumb {
+    box-shadow: 0 0 0 5px rgb(var(--brand) / 0.3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
