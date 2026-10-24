@@ -6,3 +6,10 @@ dist/
 # PHP
 server/vendor/
 server/.phpunit.cache/
+
+# Playwright
+test-results/
+playwright-report/
+playwright-report-*/
+blob-report/
+.playwright-mcp/
